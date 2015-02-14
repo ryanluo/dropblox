@@ -396,7 +396,6 @@ int Board::score(){
   for (int i = ROWS - 1; i > 0; --i) {
     int all_zeros = 0;
     for (int j = 0; j < COLS; ++j) {
-      if (
     }
   }
   return 0;
