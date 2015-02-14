@@ -77,7 +77,9 @@ class Board {
   Block* block;
   vector<Block*> preview;
 
+  Board();
   Board(Object& state);
+
 
   // Returns true if the `query` block is in valid position - that is, if all of
   // its squares are in bounds and are currently unoccupied.
@@ -95,6 +97,8 @@ class Board {
                    const int rotation,
                    const int i,
                    const int j);
+
+  int* generate();
 
   // Drops the block from whatever position it is currently at. Returns a
   // pointer to the new board state object, with the next block drawn from the
@@ -116,7 +120,6 @@ class Board {
   static void remove_rows(Bitmap* new_bitmap);
  
  private:
-  Board();
 };
 #define DROPBLOX_AI 1
 #endif
