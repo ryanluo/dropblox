@@ -302,6 +302,32 @@ void Board::place_block(vector<string> * moves,
   }
 }
 
+vector<vector<string> > commands(4*COLS);
+
+for (int i = 0; i < 4*COLS; ++i) {
+  vector<string> c;
+  for (int j = -6; j < 6; ++J) {
+    if (j < 0) {
+      for (int k = 0; k < -j; ++k) {
+        c.push_back("left");
+        commands.push_back(c);
+      }
+    }
+  }
+  commands[i] 
+}
+
+int* Board::generate() {
+  vector<vector<string> > commands(4*COLS);
+  
+
+  vector<Board> boards(4*COLS);
+  for (int i = 0; i < 4*COLS; ++i) {
+    b = boards;
+    boards[i] = b;
+  }
+}
+
 int main(int argc, char** argv) {
   // Construct a JSON Object with the given game state.
   istringstream raw_state(argv[1]);
