@@ -277,6 +277,31 @@ void Board::remove_rows(Bitmap* new_bitmap) {
   }
 }
 
+// Asserts: point is legal
+// Nothing is between block and location
+void Board::place_block(vector<string> * moves,
+                          const int rotation,
+                          const int i,
+                          const int j) {
+  Block *block = this->block;
+  for (int k = 0; k < rotation; ++k) {
+    block->rotate();
+    moves->push_back("rotate");
+  }
+  const int blockJ = block->center.j;
+  if (blockJ < j) {
+    for (int k = 0; k < j - blockJ; ++k) {
+      block->right();
+      moves->push_back("right");
+    }
+  } else {
+    for (int k = 0; k < blockJ - j; ++k) {
+      block->left();
+      moves->push_back("left");
+    }
+  }
+}
+
 int main(int argc, char** argv) {
   // Construct a JSON Object with the given game state.
   istringstream raw_state(argv[1]);
@@ -288,10 +313,13 @@ int main(int argc, char** argv) {
 
   // Make some moves!
   vector<string> moves;
+  board.place_block(&moves,0,4,0);
+  /*
   while (board.check(*board.block)) {
     board.block->right();
     moves.push_back("right");
   }
+  */
   // Ignore the last move, because it moved the block into invalid
   // position. Make all the rest.
   for (int i = 0; i < moves.size() - 1; i++) {

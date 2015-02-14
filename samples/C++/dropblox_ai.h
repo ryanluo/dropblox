@@ -1,3 +1,5 @@
+#ifdef DROPBLOX_AI
+#else
 #include "json/reader.h"
 #include "json/elements.h"
 
@@ -86,6 +88,11 @@ class Board {
   // A command is one of "left", "right", "up", "down", "rotate".
   Board* do_commands(const vector<string>& commands);
 
+  void place_block(vector <string> * moves,
+                   const int rotation,
+                   const int i,
+                   const int j);
+
   // Drops the block from whatever position it is currently at. Returns a
   // pointer to the new board state object, with the next block drawn from the
   // preview list.
@@ -104,3 +111,5 @@ class Board {
  private:
   Board();
 };
+#define DROPBLOX_AI 1
+#endif
