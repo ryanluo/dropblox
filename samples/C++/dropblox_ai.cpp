@@ -320,6 +320,7 @@ int* Board::getDestination(int row){
 
   }
   return destination;
+}
 
 // Asserts: point is legal
 // Nothing is between block and location
@@ -346,30 +347,49 @@ void Board::place_block(vector<string> * moves,
   }
 }
 
-vector<vector<string> > commands(4*COLS);
 
-for (int i = 0; i < 4*COLS; ++i) {
+ 
+
+vector<string> Board::generate() {
+  vector<vector<string> > commands;
   vector<string> c;
-  for (int j = -6; j < 6; ++J) {
-    if (j < 0) {
-      for (int k = 0; k < -j; ++k) {
-        c.push_back("left");
-        commands.push_back(c);
-      }
+  vector<string> c2;
+  commands.push_back(c);
+
+  for (int j = 0; j < 6; ++j) {
+    c.push_back("left");
+    c2.push_back("right");
+
+    for (int r = 0; r < 3; ++r) {
+      commands.push_back(c);
+      commands.push_back(c2);
+      c.push_back("rotate");
+      c2.push_back("rotate");
+    }
+
+  }
+  int minimum = 999999999;
+  int index = 0;
+  for (int i = 0; i < commands.size(); ++i) {
+    Board* b = do_commands(commands[i]);
+    int score = b->score();
+    if (score < minimum) {
+      minimum = score;
+      index = i;
     }
   }
-  commands[i] 
+  return commands[index];
 }
 
-int* Board::generate() {
-  vector<vector<string> > commands(4*COLS);
-  
-
-  vector<Board> boards(4*COLS);
-  for (int i = 0; i < 4*COLS; ++i) {
-    b = boards;
-    boards[i] = b;
+int Board::score(){
+  // Find number of holes
+  for (int i = ROWS - 1; i > 0; --i) {
+    int all_zeros = 0;
+    for (int j = 0; j < COLS; ++j) {
+      if (
+    }
   }
+  return 0;
 }
 
 int main(int argc, char** argv) {
@@ -383,13 +403,15 @@ int main(int argc, char** argv) {
 
   // Make some moves!
   vector<string> moves;
-  board.place_block(&moves,0,4,0);
+//  board.place_block(&moves,0,4,0);
   /*
   while (board.check(*board.block)) {
     board.block->right();
     moves.push_back("right");
   }
   */
+  int* x = board.getDestination(board.getBottomEmptyRow());
+  board.place_block(&moves, x[0], x[1], x[2]);
   // Ignore the last move, because it moved the block into invalid
   // position. Make all the rest.
   for (int i = 0; i < moves.size() - 1; i++) {

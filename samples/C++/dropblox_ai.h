@@ -98,7 +98,9 @@ class Board {
                    const int i,
                    const int j);
 
-  int* generate();
+  vector<string> generate();
+
+  int score();
 
   // Drops the block from whatever position it is currently at. Returns a
   // pointer to the new board state object, with the next block drawn from the
