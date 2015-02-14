@@ -12,7 +12,7 @@ using namespace std;
 #define PREVIEW_SIZE 5
 
 typedef int Bitmap[ROWS][COLS];
-
+ 
 class Board;
 
 class Point {
@@ -59,6 +59,9 @@ class Block {
 
   void reset_position();
 
+  //get the lowest grid of the block
+  int getLowest();
+  
  private:
   // This isn't a standard function, just used to reverse rotation when it fails.
   void unrotate();
@@ -96,6 +99,10 @@ class Board {
   // If there are no blocks left in the preview list, this method will fail badly!
   // This is okay because we don't expect to look ahead that far.
   Board* place();
+
+  int getBottomEmptyRow();
+
+  int* getDestination(int row);
 
   // A static method that takes in a new_bitmap and removes any full rows from it.
   // Mutates the new_bitmap in place.

@@ -128,6 +128,18 @@ void Block::reset_position() {
   rotation = 0;
 }
 
+int Block::getLowest(){
+  int lowest = 0;
+  int y = translation.j;
+  for (int i = 0; i < size; i++){
+      if(translation.j+ offsets[i].j> y){
+         lowest = i;
+         y = translation.j+ offsets[i].j;
+      }
+  }
+  return lowest; 
+}
+
 //----------------------------------
 // Board implementation starts here!
 //----------------------------------
@@ -275,6 +287,39 @@ void Board::remove_rows(Bitmap* new_bitmap) {
       (*new_bitmap)[i][j] = 0;
     }
   }
+}
+
+int Board::getBottomEmptyRow(){
+    for(int i = ROWS-1; i>=0; i--){
+       for(int j = 0; j< COLS; j++){
+          if (bitmap[i][j] == 0){
+              return i;
+          }
+       }
+    }
+    return 0;
+}
+
+
+int* Board::getDestination(int row){
+  int* destination = new int[3];
+  int col = 0;
+  for (int j = 0; j < COLS; ++j) {
+    if (!bitmap[row][j]) {
+      col = j;
+    }
+  }
+  Block* current= new Block(*this->block);
+  for(int rotate_num = 0; rotate_num< 4; rotate_num++){
+      current->rotate();
+      if(this->check(*current)){
+        destination[2] = rotate_num;
+        destination[1] = (current->translation).j;
+        destination[0] = (current->translation).i;
+      }
+
+  }
+  return destination;
 }
 
 int main(int argc, char** argv) {
