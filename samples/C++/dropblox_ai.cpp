@@ -303,23 +303,34 @@ int Board::getBottomEmptyRow(){
 
 int* Board::getDestination(int row){
   int* destination = new int[3];
+  destination[0] = -1;
   int col = 0;
   for (int j = 0; j < COLS; ++j) {
     if (!bitmap[row][j]) {
       col = j;
     }
-  }
-  Block* current= new Block(*this->block);
-  for(int rotate_num = 0; rotate_num< 4; rotate_num++){
+    Block* current= new Block(*this->block);
+    for(int rotate_num = 0; rotate_num< 4; rotate_num++){
       current->rotate();
-      if(this->check(*current)){
-        destination[2] = rotate_num;
-        destination[1] = (current->translation).j;
-        destination[0] = (current->translation).i;
-      }
+      Block* temp = new Block(*current);
+      int lowest = temp->getLowest();
+      int x = j - (temp->center.j+temp->offsets[lowest].j);
+      int y = (this->getBottomEmptyRow())-(temp->center.j+temp->offsets[lowest].i);
+      temp->center.i = temp->center.i + y;
+      temp->center.j = temp->center.j + x;
 
+      if(this->check(*temp)){
+        destination[2] = rotate_num;
+        destination[1] = (temp->translation).j;
+        destination[0] = (temp->translation).i;
+      }
+    }
+    if(destination[0]!=-1){
+      return destination;
+    }
   }
-  return destination;
+  return NULL;
+}
 
 // Asserts: point is legal
 // Nothing is between block and location
