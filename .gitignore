@@ -2,4 +2,4 @@ config.txt
 helpers/*
 sample/Java/*
 sample/Python/*
-*.swp
+sample/C++/*.swp
